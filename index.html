@@ -90,6 +90,22 @@
             justify-content: space-between;
         }
 
+        /* Área central do Mascote */
+        .mascote-container {
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            min-height: 120px; /* Garante espaço reservado para a imagem não empurrar o layout */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mascote-img {
+            max-height: 120px;
+            object-fit: contain;
+        }
+
         #outResposta {
             padding: 15px;
             border-radius: 8px;
@@ -129,6 +145,10 @@
             <span>Nota Atual: <strong id="outTotal">0.00</strong></span>
         </div>
 
+        <div class="mascote-container">
+            <img id="imgMascote" class="mascote-img" src="https://via.placeholder.com/120x120/f1f5f9/1b3687?text=Neutro" alt="Mascote Institucional">
+        </div>
+
         <div id="outResposta"></div>
     </div>
 
@@ -140,6 +160,15 @@
         var outAg = document.getElementById("outAg");
         var outTotal = document.getElementById("outTotal");
         var outResposta = document.getElementById("outResposta");
+        var imgMascote = document.getElementById("imgMascote");
+
+        // LISTA DE LINKS DOS MASCOTES (Aqui você substituirá pelos links reais fornecidos pelo design)
+        var MASCOTES = {
+            neutro: "https://via.placeholder.com/120x120/f1f5f9/1b3687?text=Neutro",
+            feliz: "https://via.placeholder.com/120x120/d4edda/155724?text=Feliz",
+            preocupado: "https://via.placeholder.com/120x120/fff3cd/856404?text=Preocupado",
+            chorando: "https://via.placeholder.com/120x120/f8d7da/721c24?text=Chorando"
+        };
 
         function calcular() {
             var valP1 = inP1.value.trim().replace(',', '.');
@@ -150,7 +179,7 @@
             var p2 = valP2 !== "" && !isNaN(valP2) ? parseFloat(valP2) : null;
             var ai = valAi !== "" && !isNaN(valAi) ? parseFloat(valAi) : null;
 
-            // Trava de limites máximos e mínimos
+            // Limites das notas
             if (p1 !== null) {
                 if (p1 > 3.0) { p1 = 3.0; inP1.value = 3; }
                 if (p1 < 0) { p1 = 0; inP1.value = 0; }
@@ -170,10 +199,11 @@
             outAg.textContent = agParcial.toFixed(2);
             outTotal.textContent = totalParcial.toFixed(2);
 
-            // Aguarda o preenchimento dos 3 campos
+            // Enquanto faltar nota, o mascote continua Neutro e o texto final oculto
             if (p1 === null || p2 === null || ai === null) {
                 outResposta.style.display = "none";
                 outResposta.className = "";
+                imgMascote.src = MASCOTES.neutro;
                 return;
             }
 
@@ -183,27 +213,28 @@
             var ag = p1 + p2;
             var notaFinal = ag + ai;
 
-            // NOVA LÓGICA DE AVALIAÇÃO:
-            // 1º Teste: Se a Nota Final atinge ou passa de 7.0, APROVADO DIRETO
+            // Lógica que define a mensagem E também muda a imagem do mascote
             if (notaFinal >= 7.0) {
                 outResposta.innerHTML = "<strong>Aprovado Direto!</strong> Parabéns, sua Nota Final foi " + notaFinal.toFixed(2) + ".";
                 outResposta.classList.add("alerta-sucesso");
+                imgMascote.src = MASCOTES.feliz; // Muda para feliz
                 
-            // 2º Teste: Se a nota é menor que 7.0 e o AG é menor que 4.0, REPROVADO sem direito à final
             } else if (ag < 4.0) {
                 outResposta.innerHTML = "<strong>Reprovado!</strong> Sua Avaliação em Grupo (AG = " + ag.toFixed(2) + ") é menor que 4,0 e sua nota não atingiu 7,0. Sem direito à prova final.";
                 outResposta.classList.add("alerta-erro");
+                imgMascote.src = MASCOTES.chorando; // Muda para chorando
                 
-            // 3º Teste: Nota entre 4.0 e 6.9 com AG >= 4.0 -> Vai para a Avaliação Final
             } else {
                 var notaNecessariaFinal = Math.max(6.0 - ag, 0.1);
 
                 if (notaNecessariaFinal > 4.0) {
                     outResposta.innerHTML = "<strong>Reprovado.</strong> Você precisaria de " + notaNecessariaFinal.toFixed(2) + " na Avaliação Final, mas a prova vale no máximo 4,0.";
                     outResposta.classList.add("alerta-erro");
+                    imgMascote.src = MASCOTES.chorando; // Muda para chorando
                 } else {
                     outResposta.innerHTML = "<strong>Avaliação Final!</strong> Média atual: " + notaFinal.toFixed(2) + ". Você precisa de pelo menos <strong>" + notaNecessariaFinal.toFixed(2) + "</strong> na Final.";
                     outResposta.classList.add("alerta-aviso");
+                    imgMascote.src = MASCOTES.preocupado; // Muda para preocupado
                 }
             }
         }
