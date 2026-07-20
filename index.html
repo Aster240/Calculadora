@@ -1,0 +1,95 @@
+<div style="background-color: #1b3687; padding: 30px 15px; border-radius: 12px; font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;">
+  <div style="background-color: #ffffff; border-radius: 12px; padding: 25px; max-width: 380px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+    
+    <h2 style="color: #1b3687; text-align: center; margin-top: 0; margin-bottom: 20px; font-size: 20px;">
+      Simulador de Situação
+    </h2>
+
+    <form oninput="
+      let p1 = parseFloat(inP1.value.replace(',', '.')) || 0;
+      let p2 = parseFloat(inP2.value.replace(',', '.')) || 0;
+      let ai = parseFloat(inAi.value.replace(',', '.')) || 0;
+
+      // Limitações máximas
+      p1 = Math.min(Math.max(p1, 0), 3);
+      p2 = Math.min(Math.max(p2, 0), 3);
+      ai = Math.min(Math.max(ai, 0), 4);
+
+      let ag = p1 + p2;
+      let notaFinal = ag + ai;
+
+      outAg.value = ag.toFixed(2);
+      outTotal.value = notaFinal.toFixed(2);
+
+      if (inP1.value === '' && inP2.value === '' && inAi.value === '') {
+        outMsg.innerHTML = 'Preencha as notas acima para calcular.';
+        boxMsg.style.backgroundColor = '#f8f9fa';
+        boxMsg.style.color = '#6c757d';
+        boxMsg.style.border = '1px solid #dee2e6';
+      } else if (ag < 4.0) {
+        outMsg.innerHTML = '<strong>Reprovado!</strong> Sua Avaliação em Grupo (AG = ' + ag.toFixed(2) + ') é menor que 4,0. Sem direito à prova final.';
+        boxMsg.style.backgroundColor = '#f8d7da';
+        boxMsg.style.color = '#721c24';
+        boxMsg.style.border = '1px solid #f5c6cb';
+      } else if (notaFinal >= 7.0) {
+        outMsg.innerHTML = '<strong>Aprovado Direto!</strong> Parabéns, sua Nota Final foi ' + notaFinal.toFixed(2) + '.';
+        boxMsg.style.backgroundColor = '#d4edda';
+        boxMsg.style.color = '#155724';
+        boxMsg.style.border = '1px solid #c3e6cb';
+      } else {
+        let rec = Math.max(6.0 - ag, 0.1);
+        if (rec > 4.0) {
+          outMsg.innerHTML = '<strong>Reprovado.</strong> Você precisaria de ' + rec.toFixed(2) + ' na Avaliação Final, mas a prova vale no máximo 4,0.';
+          boxMsg.style.backgroundColor = '#f8d7da';
+          boxMsg.style.color = '#721c24';
+          boxMsg.style.border = '1px solid #f5c6cb';
+        } else {
+          outMsg.innerHTML = '<strong>Avaliação Final!</strong> Média atual: ' + notaFinal.toFixed(2) + '. Você precisa de pelo menos <strong>' + rec.toFixed(2) + '</strong> na Final.';
+          boxMsg.style.backgroundColor = '#fff3cd';
+          boxMsg.style.color = '#856404';
+          boxMsg.style.border = '1px solid #ffeeba';
+        }
+      }
+    ">
+      
+      <!-- AG Fase 1 -->
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-weight: bold; color: #1b3687; margin-bottom: 5px; font-size: 14px;">
+          <span style="background-color: #c4d82d; color: #1b3687; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: 800;">AG</span> 
+          Fase 1 (Máx 3.0):
+        </label>
+        <input type="text" id="inP1" placeholder="Ex: 2.5" style="width: 100%; padding: 8px; border: 2px solid #e0e6ed; border-radius: 6px; box-sizing: border-box; font-size: 15px;">
+      </div>
+
+      <!-- AG Fase 2 -->
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-weight: bold; color: #1b3687; margin-bottom: 5px; font-size: 14px;">
+          <span style="background-color: #c4d82d; color: #1b3687; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: 800;">AG</span> 
+          Fase 2 (Máx 3.0):
+        </label>
+        <input type="text" id="inP2" placeholder="Ex: 3.0" style="width: 100%; padding: 8px; border: 2px solid #e0e6ed; border-radius: 6px; box-sizing: border-box; font-size: 15px;">
+      </div>
+
+      <!-- AI Individual -->
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-weight: bold; color: #1b3687; margin-bottom: 5px; font-size: 14px;">
+          <span style="background-color: #3399ff; color: #ffffff; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: 800;">AI</span> 
+          Avaliação Indiv. (Máx 4.0):
+        </label>
+        <input type="text" id="inAi" placeholder="Ex: 2.0" style="width: 100%; padding: 8px; border: 2px solid #e0e6ed; border-radius: 6px; box-sizing: border-box; font-size: 15px;">
+      </div>
+
+      <!-- Resumo Rápido -->
+      <div style="background-color: #f1f5f9; padding: 10px 12px; border-radius: 6px; font-size: 13px; color: #1b3687; margin-bottom: 15px; display: flex; justify-content: space-between;">
+        <span>AG Total: <strong><output id="outAg">0.00</output></strong></span>
+        <span>Nota Atual: <strong><output id="outTotal">0.00</output></strong></span>
+      </div>
+
+      <!-- Caixa de Resposta em Tempo Real -->
+      <div id="boxMsg" style="padding: 12px; border-radius: 6px; font-size: 13px; text-align: center; background-color: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;">
+        <span id="outMsg">Digite suas notas para ver o resultado.</span>
+      </div>
+
+    </form>
+  </div>
+</div>
