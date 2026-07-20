@@ -21,7 +21,7 @@
         }
 
         .calculadora-card {
-            background-color: #2563eb; /* Azul vibrante principal */
+            background-color: #2563eb;
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
@@ -38,19 +38,56 @@
             font-weight: 600;
         }
 
+        /* Estrutura das Barras Laterais */
+        .secao-peso {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 15px;
+        }
+
+        /* Barra Lateral AG (60%) */
+        .secao-ag {
+            border-left: 4px solid #c4d82d;
+        }
+
+        /* Barra Lateral AI (40%) */
+        .secao-ai {
+            border-left: 4px solid #60a5fa;
+        }
+
+        /* Indicador de Porcentagem discreto no topo da barra */
+        .peso-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .secao-ag .peso-label {
+            color: #c4d82d;
+        }
+
+        .secao-ai .peso-label {
+            color: #60a5fa;
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
         }
 
         label {
             display: block;
             font-weight: 600;
             color: #ffffff;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-size: 14px;
         }
 
-        /* Etiqueta AG no Verde-Limão Oficial */
         .badge-ag {
             background-color: #c4d82d;
             color: #0b1d3a;
@@ -61,7 +98,6 @@
             margin-right: 6px;
         }
 
-        /* Etiqueta AI em Azul Claro de Alto Contraste */
         .badge-ai {
             background-color: #60a5fa;
             color: #ffffff;
@@ -102,7 +138,7 @@
             border-radius: 8px;
             font-size: 14px;
             color: #ffffff;
-            margin-top: 10px;
+            margin-top: 20px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
@@ -110,7 +146,7 @@
 
         .resumo-box strong {
             font-size: 16px;
-            color: #c4d82d; /* Verde-limão alinhado ao tema */
+            color: #c4d82d;
         }
 
         .mascote-container {
@@ -128,7 +164,6 @@
             object-fit: contain;
         }
 
-        /* Alertas refinados com alto contraste e leitura agradável */
         #outResposta {
             padding: 15px;
             border-radius: 8px;
@@ -139,21 +174,18 @@
             display: none;
         }
 
-        /* Sucesso: Verde-Limão no mesmo tom do AG com texto em Azul Escuro */
         .alerta-sucesso { 
             background-color: #c4d82d; 
             color: #0b1d3a; 
             border: 1px solid #a8ba21; 
         }
 
-        /* Reprovado: Coral/Vermelho Suave e Leve */
         .alerta-erro { 
             background-color: #fecdd3; 
             color: #881337; 
             border: 1px solid #fda4af; 
         }
 
-        /* Prova Final: Dourado Suave */
         .alerta-aviso { 
             background-color: #fef08a; 
             color: #713f12; 
@@ -166,19 +198,26 @@
     <div class="calculadora-card">
         <h2>Simulador de Situação</h2>
         
-        <div class="form-group">
-            <label><span class="badge-ag">AG</span> Fase 1 (Máx 3.0):</label>
-            <input type="text" id="inProj1" placeholder="0.0">
+        <!-- Bloco AG (60%) envolvido na barra verde-limão -->
+        <div class="secao-peso secao-ag">
+            <div class="peso-label">Avaliação Grupal (60%)</div>
+            <div class="form-group">
+                <label><span class="badge-ag">AG</span> Fase 1 (Máx 3.0):</label>
+                <input type="text" id="inProj1" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label><span class="badge-ag">AG</span> Fase 2 (Máx 3.0):</label>
+                <input type="text" id="inProj2" placeholder="0.0">
+            </div>
         </div>
         
-        <div class="form-group">
-            <label><span class="badge-ag">AG</span> Fase 2 (Máx 3.0):</label>
-            <input type="text" id="inProj2" placeholder="0.0">
-        </div>
-        
-        <div class="form-group">
-            <label><span class="badge-ai">AI</span> Avaliação Indiv. (Máx 4.0):</label>
-            <input type="text" id="inIndiv" placeholder="0.0">
+        <!-- Bloco AI (40%) envolvido na barra azul-claro -->
+        <div class="secao-peso secao-ai">
+            <div class="peso-label">Avaliação Individual (40%)</div>
+            <div class="form-group">
+                <label><span class="badge-ai">AI</span> Avaliação Indiv. (Máx 4.0):</label>
+                <input type="text" id="inIndiv" placeholder="0.0">
+            </div>
         </div>
 
         <div class="resumo-box">
