@@ -55,7 +55,7 @@
             border-left: 4px solid #60a5fa;
         }
 
-        /* Indicador de Porcentagem discreto no topo da barra */
+        /* Indicador de Porcentagem */
         .peso-label {
             font-size: 11px;
             font-weight: 800;
@@ -108,27 +108,29 @@
             margin-right: 6px;
         }
 
+        /* Caixas de Texto com Fundo Branco de Alto Contraste */
         input[type="text"] {
             width: 100%;
             padding: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.25);
+            border: 2px solid #ffffff;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
-            color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.12);
+            font-weight: 600;
+            color: #0b1d3a; /* Texto escuro para leitura perfeita */
+            background-color: #ffffff; /* Fundo branco sólido */
             transition: all 0.3s ease;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border-color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.25);
+            border-color: #c4d82d;
+            box-shadow: 0 0 0 4px rgba(196, 216, 45, 0.4);
         }
 
         input[type="text"]::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: #94a3b8; /* Placeholder em cinza neutro */
+            font-weight: normal;
         }
 
         .resumo-box {
@@ -198,7 +200,6 @@
     <div class="calculadora-card">
         <h2>Simulador de Situação</h2>
         
-        <!-- Bloco AG (60%) envolvido na barra verde-limão -->
         <div class="secao-peso secao-ag">
             <div class="peso-label">Avaliação Grupal (60%)</div>
             <div class="form-group">
@@ -211,7 +212,6 @@
             </div>
         </div>
         
-        <!-- Bloco AI (40%) envolvido na barra azul-claro -->
         <div class="secao-peso secao-ai">
             <div class="peso-label">Avaliação Individual (40%)</div>
             <div class="form-group">
