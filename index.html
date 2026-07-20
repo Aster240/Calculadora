@@ -6,7 +6,6 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Alterado para buscar a imagem dentro da pasta assets */
             background-image: url('assets/Fundo facisa.png');
             background-size: cover;
             background-position: center;
@@ -17,90 +16,115 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-        }
-
-        .calculadora-card {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 400px;
-            backdrop-filter: blur(5px);
+            padding: 20px 10px;
             box-sizing: border-box;
         }
 
-        h2 {
-            color: #1b3687;
+        .calculadora-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 420px;
+            box-sizing: border-box;
+            overflow: hidden; /* Garante que o topo azul siga o arredondamento */
+        }
+
+        /* Topo azul escuro inspirado na barra da plataforma */
+        .card-header {
+            background-color: #0b1d3a; /* Azul escuro oficial */
+            padding: 20px;
             text-align: center;
-            margin-top: 0;
-            margin-bottom: 25px;
+            border-bottom: 4px solid #c4d82d; /* Detalhe em verde/amarelo institucional */
         }
 
-        .badge-ag {
-            background-color: #c4d82d;
-            color: #1b3687;
-            padding: 3px 7px;
-            border-radius: 5px;
-            font-size: 13px;
-            font-weight: 900;
-            margin-right: 5px;
-        }
-
-        .badge-ai {
-            background-color: #3399ff;
+        .card-header h2 {
             color: #ffffff;
-            padding: 3px 7px;
-            border-radius: 5px;
-            font-size: 13px;
-            font-weight: 900;
-            margin-right: 5px;
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .card-body {
+            padding: 25px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
             font-weight: 600;
-            color: #1b3687;
+            color: #0b1d3a;
             margin-bottom: 8px;
             font-size: 14px;
         }
 
+        .badge-ag {
+            background-color: #f0f4f8;
+            color: #0b1d3a;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 6px;
+            border: 1px solid #d0daf0;
+        }
+
+        .badge-ai {
+            background-color: #0b1d3a;
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #e0e6ed;
-            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
             box-sizing: border-box;
             font-size: 16px;
-            color: #333;
-            transition: border-color 0.3s;
+            color: #333333;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border-color: #3399ff;
+            border-color: #0b1d3a;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(11, 29, 58, 0.1);
         }
 
+        /* Painel de Notas no padrão limpo da plataforma */
         .resumo-box {
-            background-color: #f1f5f9;
-            padding: 12px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
             border-radius: 8px;
             font-size: 14px;
-            color: #1b3687;
-            margin-top: 15px;
-            margin-bottom: 15px;
+            color: #0b1d3a;
+            margin-top: 10px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
+        }
+
+        .resumo-box strong {
+            font-size: 16px;
+            color: #0b1d3a;
         }
 
         .mascote-container {
             text-align: center;
             margin-top: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             min-height: 120px;
             display: flex;
             justify-content: center;
@@ -112,50 +136,56 @@
             object-fit: contain;
         }
 
+        /* Caixas de resposta integradas à paleta */
         #outResposta {
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 600;
             text-align: center;
+            line-height: 1.4;
             display: none;
         }
 
-        .alerta-erro { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .alerta-sucesso { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alerta-aviso { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .alerta-erro { background-color: #ffebe9; color: #b71c1c; border-left: 4px solid #ff1744; }
+        .alerta-sucesso { background-color: #edf7ed; color: #1b5e20; border-left: 4px solid #4caf50; }
+        .alerta-aviso { background-color: #fffde7; color: #f57f17; border-left: 4px solid #fbc02d; }
     </style>
 </head>
 <body>
 
     <div class="calculadora-card">
-        <h2>Simulador de Situação</h2>
-        
-        <div class="form-group">
-            <label><span class="badge-ag">AG</span> Fase 1 (Máx 3.0):</label>
-            <input type="text" id="inProj1" placeholder="Ex: 2.5">
+        <div class="card-header">
+            <h2>Simulador de Situação</h2>
         </div>
         
-        <div class="form-group">
-            <label><span class="badge-ag">AG</span> Fase 2 (Máx 3.0):</label>
-            <input type="text" id="inProj2" placeholder="Ex: 3.0">
-        </div>
-        
-        <div class="form-group">
-            <label><span class="badge-ai">AI</span> Avaliação Indiv. (Máx 4.0):</label>
-            <input type="text" id="inIndiv" placeholder="Ex: 2.0">
-        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label><span class="badge-ag">AG</span> Fase 1 (Máx 3.0):</label>
+                <input type="text" id="inProj1" placeholder="0.0">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="badge-ag">AG</span> Fase 2 (Máx 3.0):</label>
+                <input type="text" id="inProj2" placeholder="0.0">
+            </div>
+            
+            <div class="form-group">
+                <label><span class="badge-ai">AI</span> Avaliação Indiv. (Máx 4.0):</label>
+                <input type="text" id="inIndiv" placeholder="0.0">
+            </div>
 
-        <div class="resumo-box">
-            <span>AG Total: <strong id="outAg">0.00</strong></span>
-            <span>Nota Atual: <strong id="outTotal">0.00</strong></span>
-        </div>
+            <div class="resumo-box">
+                <span>AG Total: <strong id="outAg">0.00</strong></span>
+                <span>Nota Atual: <strong id="outTotal">0.00</strong></span>
+            </div>
 
-        <div class="mascote-container">
-            <img id="imgMascote" class="mascote-img" src="https://via.placeholder.com/120x120/f1f5f9/1b3687?text=Neutro" alt="Mascote Institucional">
-        </div>
+            <div class="mascote-container">
+                <img id="imgMascote" class="mascote-img" src="https://via.placeholder.com/120x120/f8fafc/0b1d3a?text=Neutro" alt="Mascote Institucional">
+            </div>
 
-        <div id="outResposta"></div>
+            <div id="outResposta"></div>
+        </div>
     </div>
 
     <script>
@@ -169,10 +199,10 @@
         var imgMascote = document.getElementById("imgMascote");
 
         var MASCOTES = {
-            neutro: "https://via.placeholder.com/120x120/f1f5f9/1b3687?text=Neutro",
-            feliz: "https://via.placeholder.com/120x120/d4edda/155724?text=Feliz",
-            preocupado: "https://via.placeholder.com/120x120/fff3cd/856404?text=Preocupado",
-            chorando: "https://via.placeholder.com/120x120/f8d7da/721c24?text=Chorando"
+            neutro: "https://via.placeholder.com/120x120/f8fafc/0b1d3a?text=Neutro",
+            feliz: "https://via.placeholder.com/120x120/edf7ed/1b5e20?text=Feliz",
+            preocupado: "https://via.placeholder.com/120x120/fffde7/f57f17?text=Preocupado",
+            chorando: "https://via.placeholder.com/120x120/ffebe9/b71c1c?text=Chorando"
         };
 
         function calcular() {
