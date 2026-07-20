@@ -21,7 +21,7 @@
         }
 
         .calculadora-card {
-            background-color: #0b1d3a; /* Cartão todo em azul escuro (Estilo Login) */
+            background-color: #2563eb; /* Novo tom de azul mais vivo conforme a imagem */
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
@@ -31,7 +31,7 @@
         }
 
         h2 {
-            color: #ffffff; /* Letras brancas */
+            color: #ffffff;
             text-align: center;
             margin-top: 0;
             margin-bottom: 25px;
@@ -45,15 +45,14 @@
         label {
             display: block;
             font-weight: 600;
-            color: #ffffff; /* Letras brancas */
+            color: #ffffff;
             margin-bottom: 8px;
             font-size: 14px;
         }
 
-        /* Crachás coloridos clássicos que você gostou */
         .badge-ag {
-            background-color: #c4d82d; /* Verde limão */
-            color: #0b1d3a;
+            background-color: #c4d82d; /* Verde limão clássico */
+            color: #2563eb;
             padding: 3px 8px;
             border-radius: 5px;
             font-size: 12px;
@@ -62,7 +61,7 @@
         }
 
         .badge-ai {
-            background-color: #3399ff; /* Azul claro */
+            background-color: #60a5fa; /* Azul claro adaptado para o novo fundo */
             color: #ffffff;
             padding: 3px 8px;
             border-radius: 5px;
@@ -74,30 +73,29 @@
         input[type="text"] {
             width: 100%;
             padding: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.25);
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
             color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.1); /* Campo semi-transparente elegante */
+            background-color: rgba(255, 255, 255, 0.12); /* Campo levemente transparente */
             transition: all 0.3s ease;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border-color: #3399ff;
-            background-color: rgba(255, 255, 255, 0.15);
+            border-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.25);
         }
 
-        /* Placeholder customizado para aparecer em branco fosco */
         input[type="text"]::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.6);
         }
 
-        /* Resumo flutuante */
         .resumo-box {
-            background-color: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 15px;
             border-radius: 8px;
             font-size: 14px;
@@ -110,7 +108,7 @@
 
         .resumo-box strong {
             font-size: 16px;
-            color: #c4d82d; /* Destaca os totais em verde-limão */
+            color: #c4d82d; /* Destaque em verde limão */
         }
 
         .mascote-container {
@@ -128,7 +126,6 @@
             object-fit: contain;
         }
 
-        /* Alertas com contraste adaptado para o fundo escuro */
         #outResposta {
             padding: 15px;
             border-radius: 8px;
@@ -170,7 +167,7 @@
         </div>
 
         <div class="mascote-container">
-            <img id="imgMascote" class="mascote-img" src="https://via.placeholder.com/120x120/0b1d3a/ffffff?text=Neutro" alt="Mascote Institucional">
+            <img id="imgMascote" class="mascote-img" src="https://via.placeholder.com/120x120/2563eb/ffffff?text=Neutro" alt="Mascote Institucional">
         </div>
 
         <div id="outResposta"></div>
@@ -187,7 +184,7 @@
         var imgMascote = document.getElementById("imgMascote");
 
         var MASCOTES = {
-            neutro: "https://via.placeholder.com/120x120/0b1d3a/ffffff?text=Neutro",
+            neutro: "https://via.placeholder.com/120x120/2563eb/ffffff?text=Neutro",
             feliz: "https://via.placeholder.com/120x120/1b5e20/ffffff?text=Feliz",
             preocupado: "https://via.placeholder.com/120x120/f57f17/ffffff?text=Preocupado",
             chorando: "https://via.placeholder.com/120x120/b71c1c/ffffff?text=Chorando"
