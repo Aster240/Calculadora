@@ -78,7 +78,6 @@
             border-color: #3399ff;
         }
 
-        /* Container dos totais */
         .resumo-box {
             background-color: #f1f5f9;
             padding: 12px;
@@ -91,14 +90,13 @@
             justify-content: space-between;
         }
 
-        /* Caixa de Mensagem Final */
         #outResposta {
             padding: 15px;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             text-align: center;
-            display: none; /* Só aparece quando tudo for preenchido */
+            display: none;
         }
 
         .alerta-erro { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
@@ -148,12 +146,11 @@
             var valP2 = inP2.value.trim().replace(',', '.');
             var valAi = inAi.value.trim().replace(',', '.');
 
-            // Converte para número se for válido
             var p1 = valP1 !== "" && !isNaN(valP1) ? parseFloat(valP1) : null;
             var p2 = valP2 !== "" && !isNaN(valP2) ? parseFloat(valP2) : null;
             var ai = valAi !== "" && !isNaN(valAi) ? parseFloat(valAi) : null;
 
-            // TRAVA DE MÁXIMOS E MÍNIMOS
+            // Trava de limites máximos e mínimos
             if (p1 !== null) {
                 if (p1 > 3.0) { p1 = 3.0; inP1.value = 3; }
                 if (p1 < 0) { p1 = 0; inP1.value = 0; }
@@ -167,33 +164,37 @@
                 if (ai < 0) { ai = 0; inAi.value = 0; }
             }
 
-            // Atualiza o AG Total com o que já estiver preenchido
             var agParcial = (p1 || 0) + (p2 || 0);
             var totalParcial = agParcial + (ai || 0);
 
             outAg.textContent = agParcial.toFixed(2);
             outTotal.textContent = totalParcial.toFixed(2);
 
-            // VERIFICAÇÃO: Só calcula o resultado final se TODOS OS 3 CAMPOS estiverem preenchidos
+            // Aguarda o preenchimento dos 3 campos
             if (p1 === null || p2 === null || ai === null) {
                 outResposta.style.display = "none";
                 outResposta.className = "";
                 return;
             }
 
-            // Lógica final quando tudo estiver preenchido
             outResposta.style.display = "block";
             outResposta.className = "";
 
             var ag = p1 + p2;
             var notaFinal = ag + ai;
 
-            if (ag < 4.0) {
-                outResposta.innerHTML = "<strong>Reprovado!</strong> Sua Avaliação em Grupo (AG = " + ag.toFixed(2) + ") é menor que 4,0. Sem direito à prova final.";
-                outResposta.classList.add("alerta-erro");
-            } else if (notaFinal >= 7.0) {
+            // NOVA LÓGICA DE AVALIAÇÃO:
+            // 1º Teste: Se a Nota Final atinge ou passa de 7.0, APROVADO DIRETO
+            if (notaFinal >= 7.0) {
                 outResposta.innerHTML = "<strong>Aprovado Direto!</strong> Parabéns, sua Nota Final foi " + notaFinal.toFixed(2) + ".";
                 outResposta.classList.add("alerta-sucesso");
+                
+            // 2º Teste: Se a nota é menor que 7.0 e o AG é menor que 4.0, REPROVADO sem direito à final
+            } else if (ag < 4.0) {
+                outResposta.innerHTML = "<strong>Reprovado!</strong> Sua Avaliação em Grupo (AG = " + ag.toFixed(2) + ") é menor que 4,0 e sua nota não atingiu 7,0. Sem direito à prova final.";
+                outResposta.classList.add("alerta-erro");
+                
+            // 3º Teste: Nota entre 4.0 e 6.9 com AG >= 4.0 -> Vai para a Avaliação Final
             } else {
                 var notaNecessariaFinal = Math.max(6.0 - ag, 0.1);
 
@@ -207,7 +208,6 @@
             }
         }
 
-        // Executa a função a cada digitação do aluno
         inP1.oninput = calcular;
         inP2.oninput = calcular;
         inAi.oninput = calcular;
