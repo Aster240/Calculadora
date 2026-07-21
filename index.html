@@ -59,7 +59,7 @@
         .peso-label {
             font-size: 12px;
             font-weight: 700;
-            color: #ffffff; /* Texto padronizado em branco */
+            color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 10px;
@@ -244,7 +244,7 @@
         </div>
 
         <div class="mascote-container">
-            <img id="imgMascote" class="mascote-img" src="https://via.placeholder.com/120x120/2563eb/ffffff?text=Neutro" alt="Mascote Institucional">
+            <img id="imgMascote" class="mascote-img" src="assets/neutro.png" alt="Mascote Institucional">
         </div>
 
         <div id="outResposta"></div>
@@ -261,13 +261,28 @@
         var imgMascote = document.getElementById("imgMascote");
 
         var MASCOTES = {
-            neutro: "https://via.placeholder.com/120x120/2563eb/ffffff?text=Neutro",
-            feliz: "https://via.placeholder.com/120x120/c4d82d/0b1d3a?text=Feliz",
-            preocupado: "https://via.placeholder.com/120x120/fef08a/713f12?text=Preocupado",
-            chorando: "https://via.placeholder.com/120x120/fecdd3/881337?text=Chorando"
+            neutro: "assets/neutro.png",
+            feliz: "assets/feliz.png",
+            preocupado: "assets/preocupado.png",
+            chorando: "assets/chorando.png"
         };
 
+        // Função para filtrar e permitir apenas números e vírgula/ponto
+        function filtrarEntrada(input) {
+            // Substitui tudo que não for dígito, ponto ou vírgula por vazio
+            input.value = input.value.replace(/[^0-9.,]/g, '');
+            
+            // Impede mais de um ponto ou vírgula no mesmo campo
+            var partes = input.value.split(/[,.]/);
+            if (partes.length > 2) {
+                input.value = partes[0] + '.' + partes.slice(1).join('');
+            }
+        }
+
         function calcular() {
+            // Filtra o campo atual antes de calcular
+            filtrarEntrada(this);
+
             var valP1 = inP1.value.trim().replace(',', '.');
             var valP2 = inP2.value.trim().replace(',', '.');
             var valAi = inAi.value.trim().replace(',', '.');
