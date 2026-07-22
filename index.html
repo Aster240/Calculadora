@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Avaliação</title>
     <style>
         body {
@@ -21,115 +22,123 @@
         }
 
         .calculadora-card {
+            position: relative;
             background-color: #2563eb;
             border-radius: 15px;
-            padding: 30px;
+            padding: 25px 20px; /* Leve ajuste de padding para mobile */
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             width: 100%;
             max-width: 420px;
             box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Toast Popup Otimizado para Celular */
+        .toast-popup {
+            position: absolute;
+            top: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #0b2c5e;
+            color: #ffffff;
+            border: 2px solid #fef08a;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: top 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+            text-align: center;
+            white-space: normal;
+            max-width: 85%;
+        }
+
+        .toast-popup.ativo {
+            top: 12px;
+            opacity: 1;
         }
 
         h2 {
             color: #ffffff;
             text-align: center;
             margin-top: 0;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-weight: 600;
+            font-size: 20px;
         }
 
-        /* Estrutura das Barras Laterais */
         .secao-peso {
             position: relative;
-            padding-left: 16px;
+            padding-left: 14px;
             margin-bottom: 15px;
         }
 
-        /* Barra Lateral AG (60%) */
-        .secao-ag {
-            border-left: 6px solid #c4d82d;
-        }
+        .secao-ag { border-left: 5px solid #c4d82d; }
+        .secao-ai { border-left: 5px solid #0b2c5e; }
 
-        /* Barra Lateral AI (40%) */
-        .secao-ai {
-            border-left: 6px solid #0b2c5e;
-        }
-
-        /* Rótulos das Seções em Branco de Alto Contraste */
         .peso-label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        /* Etiqueta discreta da porcentagem */
         .porcentagem-tag {
-            font-size: 11px;
-            padding: 2px 6px;
+            font-size: 10px;
+            padding: 2px 5px;
             border-radius: 4px;
             font-weight: 800;
         }
 
-        .secao-ag .porcentagem-tag {
-            background-color: #c4d82d;
-            color: #0b1d3a;
-        }
+        .secao-ag .porcentagem-tag { background-color: #c4d82d; color: #0b1d3a; }
+        .secao-ai .porcentagem-tag { background-color: #0b2c5e; color: #ffffff; }
 
-        .secao-ai .porcentagem-tag {
-            background-color: #0b2c5e;
-            color: #ffffff;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
+        .form-group { margin-bottom: 12px; }
+        .form-group:last-child { margin-bottom: 0; }
 
         label {
             display: block;
             font-weight: 600;
             color: #ffffff;
-            margin-bottom: 6px;
-            font-size: 14px;
+            margin-bottom: 5px;
+            font-size: 13px;
         }
 
         .badge-ag {
             background-color: #c4d82d;
             color: #0b2c5e;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 900;
-            margin-right: 6px;
+            margin-right: 5px;
         }
 
         .badge-ai {
             background-color: #0b2c5e;
             color: #ffffff;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 900;
-            margin-right: 6px;
+            margin-right: 5px;
         }
 
-        /* Caixas de Texto com Fundo Branco de Alto Contraste */
         input[type="text"] {
             width: 100%;
-            padding: 12px;
+            padding: 10px 12px;
             border: 2px solid #ffffff;
             border-radius: 8px;
             box-sizing: border-box;
-            font-size: 16px;
+            font-size: 16px; /* Impede zoom automatico no iOS */
             font-weight: 600;
             color: #0b1d3a;
             background-color: #ffffff;
@@ -150,68 +159,53 @@
         .resumo-box {
             background-color: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px;
+            padding: 12px 15px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             color: #ffffff;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
         }
 
-        .resumo-box strong {
-            font-size: 18px;
-            color: #ffffff;
-        }
+        .resumo-box strong { font-size: 17px; color: #ffffff; }
 
         .mascote-container {
             text-align: center;
-            margin-top: 15px;
-            margin-bottom: 20px;
-            min-height: 120px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            min-height: 110px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .mascote-img {
-            max-height: 120px;
+            max-height: 110px;
             object-fit: contain;
         }
 
         #outResposta {
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             text-align: center;
             line-height: 1.4;
             display: none;
         }
 
-        .alerta-sucesso { 
-            background-color: #c4d82d; 
-            color: #0b1d3a; 
-            border: 1px solid #a8ba21; 
-        }
-
-        .alerta-erro { 
-            background-color: #fecdd3; 
-            color: #881337; 
-            border: 1px solid #fda4af; 
-        }
-
-        .alerta-aviso { 
-            background-color: #fef08a; 
-            color: #713f12; 
-            border: 1px solid #fde047; 
-        }
+        .alerta-sucesso { background-color: #c4d82d; color: #0b1d3a; border: 1px solid #a8ba21; }
+        .alerta-erro { background-color: #fecdd3; color: #881337; border: 1px solid #fda4af; }
+        .alerta-aviso { background-color: #fef08a; color: #713f12; border: 1px solid #fde047; }
     </style>
 </head>
 <body>
 
     <div class="calculadora-card">
+        <div id="toastPopup" class="toast-popup"></div>
+
         <h2>Calculadora Institucional</h2>
         
         <div class="secao-peso secao-ag">
@@ -220,11 +214,11 @@
             </div>
             <div class="form-group">
                 <label><span class="badge-ag">AG</span> Fase 1 (Máx 3.0):</label>
-                <input type="text" id="inProj1" placeholder="0.0">
+                <input type="text" id="inProj1" placeholder="0.0" inputmode="decimal">
             </div>
             <div class="form-group">
                 <label><span class="badge-ag">AG</span> Fase 2 (Máx 3.0):</label>
-                <input type="text" id="inProj2" placeholder="0.0">
+                <input type="text" id="inProj2" placeholder="0.0" inputmode="decimal">
             </div>
         </div>
         
@@ -234,7 +228,7 @@
             </div>
             <div class="form-group">
                 <label><span class="badge-ai">AI</span> Avaliação Indiv. (Máx 4.0):</label>
-                <input type="text" id="inIndiv" placeholder="0.0">
+                <input type="text" id="inIndiv" placeholder="0.0" inputmode="decimal">
             </div>
         </div>
 
@@ -259,6 +253,7 @@
         var outTotal = document.getElementById("outTotal");
         var outResposta = document.getElementById("outResposta");
         var imgMascote = document.getElementById("imgMascote");
+        var toastPopup = document.getElementById("toastPopup");
 
         var MASCOTES = {
             neutro: "assets/Neutro.png",
@@ -267,21 +262,35 @@
             chorando: "assets/Reprovado.png"
         };
 
-        // Função para filtrar e permitir apenas números e vírgula/ponto
+        var timeoutToast = null;
+
+        function exibirToast(mensagem) {
+            toastPopup.textContent = mensagem;
+            toastPopup.classList.add("ativo");
+
+            clearTimeout(timeoutToast);
+            timeoutToast = setTimeout(function() {
+                toastPopup.classList.remove("ativo");
+            }, 3000);
+        }
+
         function filtrarEntrada(input) {
-            // Substitui tudo que não for dígito, ponto ou vírgula por vazio
+            if (/[^0-9.,]/.test(input.value)) {
+                exibirToast("⚠️ Apenas números e vírgula/ponto são permitidos!");
+            }
+
             input.value = input.value.replace(/[^0-9.,]/g, '');
             
-            // Impede mais de um ponto ou vírgula no mesmo campo
             var partes = input.value.split(/[,.]/);
             if (partes.length > 2) {
                 input.value = partes[0] + '.' + partes.slice(1).join('');
             }
         }
 
-        function calcular() {
-            // Filtra o campo atual antes de calcular
-            filtrarEntrada(this);
+        function calcular(inputAtual) {
+            if (inputAtual) {
+                filtrarEntrada(inputAtual);
+            }
 
             var valP1 = inP1.value.trim().replace(',', '.');
             var valP2 = inP2.value.trim().replace(',', '.');
@@ -292,15 +301,27 @@
             var ai = valAi !== "" && !isNaN(valAi) ? parseFloat(valAi) : null;
 
             if (p1 !== null) {
-                if (p1 > 3.0) { p1 = 3.0; inP1.value = 3; }
+                if (p1 > 3.0) { 
+                    p1 = 3.0; 
+                    inP1.value = 3; 
+                    exibirToast("⚠️ Nota superior à nota máxima (3.0) permitida nesta etapa!");
+                }
                 if (p1 < 0) { p1 = 0; inP1.value = 0; }
             }
             if (p2 !== null) {
-                if (p2 > 3.0) { p2 = 3.0; inP2.value = 3; }
+                if (p2 > 3.0) { 
+                    p2 = 3.0; 
+                    inP2.value = 3; 
+                    exibirToast("⚠️ Nota superior à nota máxima (3.0) permitida nesta etapa!");
+                }
                 if (p2 < 0) { p2 = 0; inP2.value = 0; }
             }
             if (ai !== null) {
-                if (ai > 4.0) { ai = 4.0; inAi.value = 4; }
+                if (ai > 4.0) { 
+                    ai = 4.0; 
+                    inAi.value = 4; 
+                    exibirToast("⚠️ Nota superior à nota máxima (4.0) permitida nesta etapa!");
+                }
                 if (ai < 0) { ai = 0; inAi.value = 0; }
             }
 
@@ -348,9 +369,9 @@
             }
         }
 
-        inP1.oninput = calcular;
-        inP2.oninput = calcular;
-        inAi.oninput = calcular;
+        inP1.oninput = function() { calcular(this); };
+        inP2.oninput = function() { calcular(this); };
+        inAi.oninput = function() { calcular(this); };
     </script>
 </body>
 </html>
