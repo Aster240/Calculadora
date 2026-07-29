@@ -25,7 +25,7 @@
             position: relative;
             background-color: #2563eb;
             border-radius: 15px;
-            padding: 25px 20px; /* Leve ajuste de padding para mobile */
+            padding: 25px 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             width: 100%;
             max-width: 420px;
@@ -33,7 +33,7 @@
             overflow: hidden;
         }
 
-        /* Toast Popup Otimizado para Celular */
+        /* Toast Popup Otimizado */
         .toast-popup {
             position: absolute;
             top: -70px;
@@ -114,7 +114,7 @@
 
         .badge-ag {
             background-color: #c4d82d;
-            color: #0b2c5e;
+            color: #0b1d3a;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 11px;
@@ -138,7 +138,7 @@
             border: 2px solid #ffffff;
             border-radius: 8px;
             box-sizing: border-box;
-            font-size: 16px; /* Impede zoom automatico no iOS */
+            font-size: 16px;
             font-weight: 600;
             color: #0b1d3a;
             background-color: #ffffff;
@@ -173,8 +173,8 @@
 
         .mascote-container {
             text-align: center;
-            margin-top: 10px;
-            margin-bottom: 15px;
+            margin-top: 15px;
+            margin-bottom: 10px;
             min-height: 110px;
             display: flex;
             justify-content: center;
@@ -237,11 +237,13 @@
             <span>Nota Atual: <strong id="outTotal">0.00</strong></span>
         </div>
 
+        <!-- Mensagem de Resposta (Agora vem ANTES do Mascote) -->
+        <div id="outResposta"></div>
+
+        <!-- Mascote posicionado ABAIXO da mensagem de resposta -->
         <div class="mascote-container">
             <img id="imgMascote" class="mascote-img" src="assets/Neutro.png" alt="Mascote Institucional">
         </div>
-
-        <div id="outResposta"></div>
     </div>
 
     <script>
@@ -274,6 +276,13 @@
             }, 3000);
         }
 
+        // Função para formatar a nota sem .00 caso seja um número inteiro
+        function formatarNota(valor) {
+            if (valor === null || isNaN(valor)) return "0";
+            var notaFixa = parseFloat(valor.toFixed(2));
+            return (notaFixa % 1 === 0) ? notaFixa.toFixed(0) : notaFixa.toString().replace('.', ',');
+        }
+
         function filtrarEntrada(input) {
             if (/[^0-9.,]/.test(input.value)) {
                 exibirToast("⚠️ Apenas números e vírgula/ponto são permitidos!");
@@ -300,36 +309,34 @@
             var p2 = valP2 !== "" && !isNaN(valP2) ? parseFloat(valP2) : null;
             var ai = valAi !== "" && !isNaN(valAi) ? parseFloat(valAi) : null;
 
+            // Zerar o campo caso a nota exceda o limite máximo
             if (p1 !== null) {
                 if (p1 > 3.0) { 
-                    p1 = 3.0; 
-                    inP1.value = 3; 
+                    p1 = null; 
+                    inP1.value = ""; 
                     exibirToast("⚠️ Nota superior à nota máxima (3.0) permitida nesta etapa!");
-                }
-                if (p1 < 0) { p1 = 0; inP1.value = 0; }
+                } else if (p1 < 0) { p1 = 0; inP1.value = "0"; }
             }
             if (p2 !== null) {
                 if (p2 > 3.0) { 
-                    p2 = 3.0; 
-                    inP2.value = 3; 
+                    p2 = null; 
+                    inP2.value = ""; 
                     exibirToast("⚠️ Nota superior à nota máxima (3.0) permitida nesta etapa!");
-                }
-                if (p2 < 0) { p2 = 0; inP2.value = 0; }
+                } else if (p2 < 0) { p2 = 0; inP2.value = "0"; }
             }
             if (ai !== null) {
                 if (ai > 4.0) { 
-                    ai = 4.0; 
-                    inAi.value = 4; 
+                    ai = null; 
+                    inAi.value = ""; 
                     exibirToast("⚠️ Nota superior à nota máxima (4.0) permitida nesta etapa!");
-                }
-                if (ai < 0) { ai = 0; inAi.value = 0; }
+                } else if (ai < 0) { ai = 0; inAi.value = "0"; }
             }
 
             var agParcial = (p1 || 0) + (p2 || 0);
             var totalParcial = agParcial + (ai || 0);
 
-            outAg.textContent = agParcial.toFixed(2);
-            outTotal.textContent = totalParcial.toFixed(2);
+            outAg.textContent = formatarNota(agParcial);
+            outTotal.textContent = formatarNota(totalParcial);
 
             if (p1 === null || p2 === null || ai === null) {
                 outResposta.style.display = "none";
@@ -345,12 +352,12 @@
             var notaFinal = ag + ai;
 
             if (notaFinal >= 7.0) {
-                outResposta.innerHTML = "<strong>Aprovado Direto!</strong> Parabéns, sua Nota Final foi " + notaFinal.toFixed(2) + ".";
+                outResposta.innerHTML = "<strong>Aprovado!</strong> Parabéns, sua nota final é <strong>" + formatarNota(notaFinal) + "</strong>.";
                 outResposta.classList.add("alerta-sucesso");
                 imgMascote.src = MASCOTES.feliz;
                 
             } else if (ag < 4.0) {
-                outResposta.innerHTML = "<strong>Reprovado!</strong> Sua Avaliação em Grupo (AG = " + ag.toFixed(2) + ") é menor que 4,0 e sua nota não atingiu 7,0. Sem direito à prova final.";
+                outResposta.innerHTML = "<strong>Reprovado!</strong> Sua média é menor que 7.0 e a AG menor que 4.0 , ou seja, não é possível realizar Avaliação Final.";
                 outResposta.classList.add("alerta-erro");
                 imgMascote.src = MASCOTES.chorando;
                 
@@ -358,11 +365,14 @@
                 var notaNecessariaFinal = Math.max(6.0 - ag, 0.1);
 
                 if (notaNecessariaFinal > 4.0) {
-                    outResposta.innerHTML = "<strong>Reprovado.</strong> Você precisaria de " + notaNecessariaFinal.toFixed(2) + " na Avaliação Final, mas a prova vale no máximo 4,0.";
+                    outResposta.innerHTML = "<strong>Reprovado.</strong> Você precisaria de " + formatarNota(notaNecessariaFinal) + " na Avaliação Final, mas a prova vale no máximo 4.0.";
                     outResposta.classList.add("alerta-erro");
                     imgMascote.src = MASCOTES.chorando;
                 } else {
-                    outResposta.innerHTML = "<strong>Avaliação Final!</strong> Média atual: " + notaFinal.toFixed(2) + ". Você precisa de pelo menos <strong>" + notaNecessariaFinal.toFixed(2) + "</strong> na Final.";
+                    // Condicional do singular/plural de "ponto(s)"
+                    var textoPonto = (notaNecessariaFinal === 1) ? "ponto" : "pontos";
+
+                    outResposta.innerHTML = "<strong>Avaliação Final!</strong> Sua média atual é <strong>" + formatarNota(notaFinal) + "</strong>, mas AG = <strong>" + formatarNota(ag) + "</strong>, ou seja, pode fazer a Final precisando de, pelo menos, <strong>" + formatarNota(notaNecessariaFinal) + " " + textoPonto + "</strong>.";
                     outResposta.classList.add("alerta-aviso");
                     imgMascote.src = MASCOTES.preocupado;
                 }
