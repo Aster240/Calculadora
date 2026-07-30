@@ -368,10 +368,9 @@
                     outResposta.classList.add("alerta-erro");
                     imgMascote.src = MASCOTES.chorando;
                 } else {
-                    // Condicional do singular/plural de "ponto(s)"
                     var textoPonto = (notaNecessariaFinal === 1) ? "ponto" : "pontos";
 
-                    outResposta.innerHTML = "<strong>Avaliação Final!</strong> Sua média atual é <strong>" + formatarNota(notaFinal) + "</strong>, mas AG = <strong>" + formatarNota(ag) + "</strong>, ou seja, pode fazer a Final precisando de, pelo menos, <strong>" + formatarNota(notaNecessariaFinal) + " " + textoPonto + "</strong>.";
+                    outResposta.innerHTML = "<strong>Avaliação Final!</strong> Sua média atual é <strong>" + formatarNota(notaFinal) + "</strong>, mas a AG = <strong>" + formatarNota(ag) + "</strong>, ou seja, pode fazer a Final precisando de, pelo menos, <strong>" + formatarNota(notaNecessariaFinal) + " " + textoPonto + "</strong>.";
                     outResposta.classList.add("alerta-aviso");
                     imgMascote.src = MASCOTES.preocupado;
                 }
