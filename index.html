@@ -428,7 +428,7 @@
                 imgMascote.src = MASCOTES.feliz;
                 
             } else if (agTotal < 4.0) {
-                outResposta.innerHTML = "<strong>Reprovado!</strong> Sua média é menor que 7,0 e Projeto menor que 4,0, ou seja, não é possível realizar Avaliação Final.";
+                outResposta.innerHTML = "<strong>Reprovado!</strong> Sua média é menor que 7,0 e o Projeto menor que 4,0, ou seja, não é possível realizar Avaliação Final.";
                 outResposta.classList.add("alerta-erro");
                 imgMascote.src = MASCOTES.chorando;
                 
@@ -442,7 +442,7 @@
                 } else {
                     var textoPonto = (notaNecessariaFinal === 1) ? "ponto" : "pontos";
 
-                    outResposta.innerHTML = "<strong>Avaliação Final!</strong> Sua média atual é <strong>" + formatarNota(notaFinal) + "</strong>, mas Projeto = <strong>" + formatarNota(agTotal) + "</strong>, ou seja, pode fazer a Final precisando de, pelo menos, <strong>" + formatarNota(notaNecessariaFinal) + " " + textoPonto + "</strong>.";
+                    outResposta.innerHTML = "<strong>Avaliação Final!</strong> Sua média atual é <strong>" + formatarNota(notaFinal) + "</strong>, mas o Projeto = <strong>" + formatarNota(agTotal) + "</strong>, ou seja, pode fazer a Final precisando de, pelo menos, <strong>" + formatarNota(notaNecessariaFinal) + " " + textoPonto + "</strong>.";
                     outResposta.classList.add("alerta-aviso");
                     imgMascote.src = MASCOTES.preocupado;
                 }
