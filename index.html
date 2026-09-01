@@ -7,10 +7,6 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -32,7 +28,53 @@
             overflow: hidden;
         }
 
-        /* Toast Popup Otimizado */
+        /* Sistema de Abas Superiores */
+        .tabs-nav {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 20px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 8px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        /* Quando a aba Presencial estiver selecionada (Verde Limão) */
+        #tabBtnPresencial.ativo {
+            background-color: #c4d82d;
+            color: #0b1d3a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Quando a aba EAD e SEMI estiver selecionada (Verde Limão) */
+        #tabBtnEad.ativo {
+            background-color: #c4d82d;
+            color: #0b1d3a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .tab-conteudo {
+            display: none;
+        }
+
+        .tab-conteudo.ativo {
+            display: block;
+        }
+
+        /* Toast Popup */
         .toast-popup {
             position: absolute;
             top: -70px;
@@ -66,7 +108,7 @@
             margin-top: 0;
             margin-bottom: 20px;
             font-weight: 600;
-            font-size: 20px;
+            font-size: 19px;
         }
 
         .secao-peso {
@@ -205,29 +247,69 @@
     <div class="calculadora-card">
         <div id="toastPopup" class="toast-popup"></div>
 
+        <!-- Abas de Seleção da Modalidade -->
+        <div class="tabs-nav">
+            <button class="tab-btn ativo" id="tabBtnPresencial" onclick="trocarAba('presencial')">Presencial</button>
+            <button class="tab-btn" id="tabBtnEad" onclick="trocarAba('ead')">EAD / SEMI</button>
+        </div>
+
         <h2>Calculadora do processo avaliativo</h2>
         
-        <div class="secao-peso secao-ag">
-            <div class="peso-label">
-                Avaliação em Grupo <span class="porcentagem-tag">60%</span>
+        <!-- Formulário Presencial -->
+        <div id="abaPresencial" class="tab-conteudo ativo">
+            <div class="secao-peso secao-ag">
+                <div class="peso-label">
+                    Projeto <span class="porcentagem-tag">60%</span>
+                </div>
+                <div class="form-group">
+                    <label><span class="badge-ag">AG</span> Fase 1 (Máx 3.0 pontos):</label>
+                    <input type="text" id="inPresP1" placeholder="0.0" inputmode="decimal">
+                </div>
+                <div class="form-group">
+                    <label><span class="badge-ag">AG</span> Fase 2 (Máx 3.0 pontos):</label>
+                    <input type="text" id="inPresP2" placeholder="0.0" inputmode="decimal">
+                </div>
             </div>
-            <div class="form-group">
-                <label><span class="badge-ag">AG</span> Fase 1 (Máx 3.0 pontos):</label>
-                <input type="text" id="inProj1" placeholder="0.0" inputmode="decimal">
-            </div>
-            <div class="form-group">
-                <label><span class="badge-ag">AG</span> Fase 2 (Máx 3.0 pontos):</label>
-                <input type="text" id="inProj2" placeholder="0.0" inputmode="decimal">
+            
+            <div class="secao-peso secao-ai">
+                <div class="peso-label">
+                    Avaliação Individual <span class="porcentagem-tag">40%</span>
+                </div>
+                <div class="form-group">
+                    <label><span class="badge-ai">AI</span> Avaliação Individual (Máx 4.0 pontos):</label>
+                    <input type="text" id="inPresAi" placeholder="0.0" inputmode="decimal">
+                </div>
             </div>
         </div>
-        
-        <div class="secao-peso secao-ai">
-            <div class="peso-label">
-                Avaliação Individual <span class="porcentagem-tag">40%</span>
+
+        <!-- Formulário EAD e SEMI (3 etapas para AG) -->
+        <div id="abaEad" class="tab-conteudo">
+            <div class="secao-peso secao-ag">
+                <div class="peso-label">
+                    Projeto <span class="porcentagem-tag">60%</span>
+                </div>
+                <div class="form-group">
+                    <label><span class="badge-ag">AG</span> Fase 1 (Máx 2.0 pontos - 20%):</label>
+                    <input type="text" id="inEadP1" placeholder="0.0" inputmode="decimal">
+                </div>
+                <div class="form-group">
+                    <label><span class="badge-ag">AG</span> Fase 2 (Máx 2.0 pontos - 20%):</label>
+                    <input type="text" id="inEadP2" placeholder="0.0" inputmode="decimal">
+                </div>
+                <div class="form-group">
+                    <label><span class="badge-ai">AI</span> Avaliação individual no projeto (Máx 2.0 pontos - 20%):</label>
+                    <input type="text" id="inEadPart" placeholder="0.0" inputmode="decimal">
+                </div>
             </div>
-            <div class="form-group">
-                <label><span class="badge-ai">AI</span> Avaliação Individual (Máx 4.0 pontos):</label>
-                <input type="text" id="inIndiv" placeholder="0.0" inputmode="decimal">
+            
+            <div class="secao-peso secao-ai">
+                <div class="peso-label">
+                    Avaliação Individual <span class="porcentagem-tag">40%</span>
+                </div>
+                <div class="form-group">
+                    <label><span class="badge-ai">AI</span> Atividades Individuais (Máx 4.0 pontos - 40%):</label>
+                    <input type="text" id="inEadAi" placeholder="0.0" inputmode="decimal">
+                </div>
             </div>
         </div>
 
@@ -236,19 +318,26 @@
             <span>Nota Atual: <strong id="outTotal">0.00</strong></span>
         </div>
 
-        <!-- Mensagem de Resposta (Agora vem ANTES do Mascote) -->
         <div id="outResposta"></div>
 
-        <!-- Mascote posicionado ABAIXO da mensagem de resposta -->
         <div class="mascote-container">
             <img id="imgMascote" class="mascote-img" src="assets/Neutro.png" alt="Mascote Institucional">
         </div>
     </div>
 
     <script>
-        var inP1 = document.getElementById("inProj1");
-        var inP2 = document.getElementById("inProj2");
-        var inAi = document.getElementById("inIndiv");
+        var modoAtual = 'presencial';
+
+        // Elementos Presencial
+        var inPresP1 = document.getElementById("inPresP1");
+        var inPresP2 = document.getElementById("inPresP2");
+        var inPresAi = document.getElementById("inPresAi");
+
+        // Elementos EAD / SEMI (3 campos de AG + 1 de AI)
+        var inEadP1   = document.getElementById("inEadP1");
+        var inEadP2   = document.getElementById("inEadP2");
+        var inEadPart = document.getElementById("inEadPart");
+        var inEadAi   = document.getElementById("inEadAi");
         
         var outAg = document.getElementById("outAg");
         var outTotal = document.getElementById("outTotal");
@@ -275,11 +364,32 @@
             }, 3000);
         }
 
-        // Função para formatar a nota sem .00 caso seja um número inteiro
         function formatarNota(valor) {
             if (valor === null || isNaN(valor)) return "0";
             var notaFixa = parseFloat(valor.toFixed(2));
             return (notaFixa % 1 === 0) ? notaFixa.toFixed(0) : notaFixa.toString().replace('.', ',');
+        }
+
+        function trocarAba(modo) {
+            modoAtual = modo;
+            
+            document.getElementById("tabBtnPresencial").classList.toggle("ativo", modo === 'presencial');
+            document.getElementById("tabBtnEad").classList.toggle("ativo", modo === 'ead');
+            document.getElementById("abaPresencial").classList.toggle("ativo", modo === 'presencial');
+            document.getElementById("abaEad").classList.toggle("ativo", modo === 'ead');
+
+            if (modo === 'presencial') {
+                inEadP1.value = "";
+                inEadP2.value = "";
+                inEadPart.value = "";
+                inEadAi.value = "";
+                calcularPresencial();
+            } else {
+                inPresP1.value = "";
+                inPresP2.value = "";
+                inPresAi.value = "";
+                calcularEad();
+            }
         }
 
         function filtrarEntrada(input) {
@@ -295,49 +405,14 @@
             }
         }
 
-        function calcular(inputAtual) {
-            if (inputAtual) {
-                filtrarEntrada(inputAtual);
-            }
+        function processarResultado(ag, ai, camposCompletos) {
+            var agTotal = ag || 0;
+            var notaFinal = agTotal + (ai || 0);
 
-            var valP1 = inP1.value.trim().replace(',', '.');
-            var valP2 = inP2.value.trim().replace(',', '.');
-            var valAi = inAi.value.trim().replace(',', '.');
+            outAg.textContent = formatarNota(agTotal);
+            outTotal.textContent = formatarNota(notaFinal);
 
-            var p1 = valP1 !== "" && !isNaN(valP1) ? parseFloat(valP1) : null;
-            var p2 = valP2 !== "" && !isNaN(valP2) ? parseFloat(valP2) : null;
-            var ai = valAi !== "" && !isNaN(valAi) ? parseFloat(valAi) : null;
-
-            // Zerar o campo caso a nota exceda o limite máximo
-            if (p1 !== null) {
-                if (p1 > 3.0) { 
-                    p1 = null; 
-                    inP1.value = ""; 
-                    exibirToast("⚠️ Nota superior à nota máxima (3.0) permitida nesta etapa!");
-                } else if (p1 < 0) { p1 = 0; inP1.value = "0"; }
-            }
-            if (p2 !== null) {
-                if (p2 > 3.0) { 
-                    p2 = null; 
-                    inP2.value = ""; 
-                    exibirToast("⚠️ Nota superior à nota máxima (3.0) permitida nesta etapa!");
-                } else if (p2 < 0) { p2 = 0; inP2.value = "0"; }
-            }
-            if (ai !== null) {
-                if (ai > 4.0) { 
-                    ai = null; 
-                    inAi.value = ""; 
-                    exibirToast("⚠️ Nota superior à nota máxima (4.0) permitida nesta etapa!");
-                } else if (ai < 0) { ai = 0; inAi.value = "0"; }
-            }
-
-            var agParcial = (p1 || 0) + (p2 || 0);
-            var totalParcial = agParcial + (ai || 0);
-
-            outAg.textContent = formatarNota(agParcial);
-            outTotal.textContent = formatarNota(totalParcial);
-
-            if (p1 === null || p2 === null || ai === null) {
+            if (!camposCompletos) {
                 outResposta.style.display = "none";
                 outResposta.className = "";
                 imgMascote.src = MASCOTES.neutro;
@@ -347,39 +422,88 @@
             outResposta.style.display = "block";
             outResposta.className = "";
 
-            var ag = p1 + p2;
-            var notaFinal = ag + ai;
-
             if (notaFinal >= 7.0) {
                 outResposta.innerHTML = "<strong>Aprovado!</strong> Parabéns, sua nota final é <strong>" + formatarNota(notaFinal) + "</strong>.";
                 outResposta.classList.add("alerta-sucesso");
                 imgMascote.src = MASCOTES.feliz;
                 
-            } else if (ag < 4.0) {
-                outResposta.innerHTML = "<strong>Reprovado!</strong> Sua média é menor que 7.0 e a AG menor que 4.0 , ou seja, não é possível realizar Avaliação Final.";
+            } else if (agTotal < 4.0) {
+                outResposta.innerHTML = "<strong>Reprovado!</strong> Sua média é menor que 7,0 e a AG menor que 4,0, ou seja, não é possível realizar Avaliação Final.";
                 outResposta.classList.add("alerta-erro");
                 imgMascote.src = MASCOTES.chorando;
                 
             } else {
-                var notaNecessariaFinal = Math.max(6.0 - ag, 0.1);
+                var notaNecessariaFinal = Math.max(6.0 - agTotal, 0.1);
 
                 if (notaNecessariaFinal > 4.0) {
-                    outResposta.innerHTML = "<strong>Reprovado.</strong> Você precisaria de " + formatarNota(notaNecessariaFinal) + " na Avaliação Final, mas a prova vale no máximo 4.0.";
+                    outResposta.innerHTML = "<strong>Reprovado.</strong> Você precisaria de " + formatarNota(notaNecessariaFinal) + " na Avaliação Final, mas a prova vale no máximo 4,0.";
                     outResposta.classList.add("alerta-erro");
                     imgMascote.src = MASCOTES.chorando;
                 } else {
                     var textoPonto = (notaNecessariaFinal === 1) ? "ponto" : "pontos";
 
-                    outResposta.innerHTML = "<strong>Avaliação Final!</strong> Sua média atual é <strong>" + formatarNota(notaFinal) + "</strong>, mas a AG = <strong>" + formatarNota(ag) + "</strong>, ou seja, pode fazer a Final precisando de, pelo menos, <strong>" + formatarNota(notaNecessariaFinal) + " " + textoPonto + "</strong>.";
+                    outResposta.innerHTML = "<strong>Avaliação Final!</strong> Sua média atual é <strong>" + formatarNota(notaFinal) + "</strong>, mas AG = <strong>" + formatarNota(agTotal) + "</strong>, ou seja, pode fazer a Final precisando de, pelo menos, <strong>" + formatarNota(notaNecessariaFinal) + " " + textoPonto + "</strong>.";
                     outResposta.classList.add("alerta-aviso");
                     imgMascote.src = MASCOTES.preocupado;
                 }
             }
         }
 
-        inP1.oninput = function() { calcular(this); };
-        inP2.oninput = function() { calcular(this); };
-        inAi.oninput = function() { calcular(this); };
+        // Cálculo Modalidade Presencial
+        function calcularPresencial(inputAtual) {
+            if (inputAtual) filtrarEntrada(inputAtual);
+
+            var vP1 = inPresP1.value.trim().replace(',', '.');
+            var vP2 = inPresP2.value.trim().replace(',', '.');
+            var vAi = inPresAi.value.trim().replace(',', '.');
+
+            var p1 = vP1 !== "" && !isNaN(vP1) ? parseFloat(vP1) : null;
+            var p2 = vP2 !== "" && !isNaN(vP2) ? parseFloat(vP2) : null;
+            var ai = vAi !== "" && !isNaN(vAi) ? parseFloat(vAi) : null;
+
+            if (p1 !== null && p1 > 3.0) { p1 = null; inPresP1.value = ""; exibirToast("⚠️ Nota superior à nota máxima (3.0) permitida nesta etapa!"); }
+            if (p2 !== null && p2 > 3.0) { p2 = null; inPresP2.value = ""; exibirToast("⚠️ Nota superior à nota máxima (3.0) permitida nesta etapa!"); }
+            if (ai !== null && ai > 4.0) { ai = null; inPresAi.value = ""; exibirToast("⚠️ Nota superior à nota máxima (4.0) permitida nesta etapa!"); }
+
+            var ag = (p1 || 0) + (p2 || 0);
+            var camposCompletos = (p1 !== null && p2 !== null && ai !== null);
+            processarResultado(ag, ai, camposCompletos);
+        }
+
+        // Cálculo Modalidade EAD e SEMI
+        function calcularEad(inputAtual) {
+            if (inputAtual) filtrarEntrada(inputAtual);
+
+            var vP1   = inEadP1.value.trim().replace(',', '.');
+            var vP2   = inEadP2.value.trim().replace(',', '.');
+            var vPart = inEadPart.value.trim().replace(',', '.');
+            var vAi   = inEadAi.value.trim().replace(',', '.');
+
+            var p1   = vP1   !== "" && !isNaN(vP1)   ? parseFloat(vP1)   : null;
+            var p2   = vP2   !== "" && !isNaN(vP2)   ? parseFloat(vP2)   : null;
+            var part = vPart !== "" && !isNaN(vPart) ? parseFloat(vPart) : null;
+            var ai   = vAi   !== "" && !isNaN(vAi)   ? parseFloat(vAi)   : null;
+
+            if (p1   !== null && p1   > 2.0) { p1   = null; inEadP1.value   = ""; exibirToast("⚠️ Nota superior à nota máxima (2.0) permitida para a Fase 1!"); }
+            if (p2   !== null && p2   > 2.0) { p2   = null; inEadP2.value   = ""; exibirToast("⚠️ Nota superior à nota máxima (2.0) permitida para a Fase 2!"); }
+            if (part !== null && part > 2.0) { part = null; inEadPart.value = ""; exibirToast("⚠️ Nota superior à nota máxima (2.0) permitida para a Avaliação Individual no Projeto!"); }
+            if (ai   !== null && ai   > 4.0) { ai   = null; inEadAi.value   = ""; exibirToast("⚠️ Nota superior à nota máxima (4.0) permitida nesta etapa!"); }
+
+            var ag = (p1 || 0) + (p2 || 0) + (part || 0);
+            var camposCompletos = (p1 !== null && p2 !== null && part !== null && ai !== null);
+            processarResultado(ag, ai, camposCompletos);
+        }
+
+        // Eventos Presencial
+        inPresP1.oninput = function() { calcularPresencial(this); };
+        inPresP2.oninput = function() { calcularPresencial(this); };
+        inPresAi.oninput = function() { calcularPresencial(this); };
+
+        // Eventos EAD e SEMI
+        inEadP1.oninput   = function() { calcularEad(this); };
+        inEadP2.oninput   = function() { calcularEad(this); };
+        inEadPart.oninput = function() { calcularEad(this); };
+        inEadAi.oninput   = function() { calcularEad(this); };
     </script>
 </body>
 </html>
